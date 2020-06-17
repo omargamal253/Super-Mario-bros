@@ -1,0 +1,1082 @@
+#include "Level2.h"
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <sstream>  // for string streams
+#include <string>
+#include <SFML/Window.hpp>
+using namespace std  ;
+#include "Ghoust.h"
+#include "Coin.h"
+#include"Win.h"
+#include"pageMain.h"
+#include"new.h"
+
+
+void Level2::loadFiles()
+{
+
+    window1.create(sf::VideoMode(800, 600), "My window");
+
+    if (!texture.loadFromFile("smb_mario_sheet3last.png"))
+    {
+        cout<< " not fouaaaaand texture" << endl ;
+    }
+    if (!mario_die_texture.loadFromFile("8c57e1d242cac95436cf6d26babf709f.png"))
+    {
+        cout<< " mario_die_texture not fouaaaaand texture" << endl ;
+    }
+    if (!gameOver_texture.loadFromFile("MarioMaker_GameOver.png"))
+    {
+        cout<< " gameOver_texture not fouaaaaand texture" << endl ;
+    }
+    if (!font.loadFromFile("MAGNETOB.ttf"))
+    {
+        cout<< " font not found "<< endl ;
+    }
+     if(!winPage_p.loadFromFile("MarioMaker_GameOver.png"))
+    {
+        cout<<"win page not founded";
+    }
+    view.setCenter(sf::Vector2f(300, 300));
+    view.setSize(sf::Vector2f(800.f, 600.f));
+    //   window.setFramerateLimit(15) ;
+    mario.setTexture(texture) ;
+    mario.setTextureRect(sf::IntRect(220, 0, 27.5,57)) ;
+    /////////////
+    mario.setPosition(150, 300) ;
+
+    //to function loadscore
+
+    if (!coin_texture2.loadFromFile("toppng.com-click-for-full-sized-image-coins-mario-coin-sprite-sheet-811x590Copy.png"))
+    {
+        cout<< " coin_texture not fouaaaaand texture" << endl ;
+    }
+    if (!ghoust_texture2.loadFromFile("images_ghoust.png"))
+    {
+        cout<< " coin_texture not fouaaaaand texture" << endl ;
+    }
+
+    coin_sprite2.setTexture( coin_texture2 ) ;
+    coin_sprite2.setTextureRect(sf::IntRect(  0 * 27.17,0,  27.17,29 ) )  ;
+
+    ghoust_sprite2.setTexture( ghoust_texture2 ) ;
+    ghoust_sprite2.setTextureRect(sf::IntRect(  0,0,  43.5,33 ) )  ;
+
+    text_score.setFont(font) ;
+    text_score.setCharacterSize(30) ;
+    text_score.setFillColor(sf::Color(4,9,55 ));
+
+    text_score2.setFont(font) ;
+    text_score2.setCharacterSize(30) ;
+    text_score2.setFillColor(sf::Color(4,9,55 ));
+
+    texttimer.setFont(font) ;
+    texttimer.setCharacterSize(30) ;
+    texttimer.setFillColor(sf::Color(4,9,55 ));
+
+    textTime.setFont(font) ;
+    textTime.setCharacterSize(30) ;
+    textTime.setFillColor(sf::Color(160,0,0 ));
+    textTime.setString("Time") ;
+}
+void Level2::loadMap()
+{
+    if (!texturesun.loadFromFile("cloud.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!textureGround.loadFromFile("ground.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!ground2.loadFromFile("ground2.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!groundheigh.loadFromFile("ground.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!star.loadFromFile("star.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!sky.loadFromFile("sky.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!moon.loadFromFile("moon.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!tree.loadFromFile("tree.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!box.loadFromFile("box.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!fire.loadFromFile("fire.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!balata.loadFromFile("balata.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!box2.loadFromFile("box2.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!wood.loadFromFile("wood.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!water.loadFromFile("water.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!small.loadFromFile("small.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!tube.loadFromFile("tube.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    if (!player.loadFromFile("player.png"))
+    {
+        cout << " not fouaaaaand texture" << endl;
+    }
+    int map2[6][30] = { 3 ,6 ,4 ,3 ,4 ,6 ,3 ,6 ,4 ,6 ,5 ,6 ,3 ,4 ,4 ,3 ,6 ,3 ,6 ,3 ,4 ,4 ,4 ,0 ,0 ,0 ,0 ,0 ,0 ,0,
+                        0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0,
+                        3 ,10,3 ,0 ,0 ,0 ,0 ,3 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0,
+                        0 ,0 ,0 ,0 ,13,8 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,12,0 ,0 ,0 ,0 ,0 ,2 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,17,2 ,2,
+                        13,13,7 ,15,2 ,7 ,17,0 ,15,15,15,2 ,2 ,0 ,15,0 ,13,7 ,2 ,0 ,0 ,17,0 ,0 ,8 ,0 ,2 ,2 ,2 ,2,
+                        1 ,1 ,14,1 ,0 ,1 ,1 ,1 ,14,1 ,11,0 ,0 ,1 ,1 ,14,1 ,1 ,0 ,0 ,1 ,1 ,14,1 ,1 ,1 ,10,1 ,1 ,1,
+
+                      };
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 30; j++)
+        {
+            if (map2[i][j] == 1)
+            {
+                map1[i][j].setTexture(textureGround);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 206, 110));
+            }
+            else if (map2[i][j] == 2)
+            {
+                map1[i][j].setTexture(groundheigh);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 206, 40));
+            }
+            else if (map2[i][j] == 3)
+            {
+                map1[i][j].setTexture(texturesun);
+            }
+            else if (map2[i][j] == 4)
+            {
+                map1[i][j].setTexture(sky);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 534, 125));
+            }
+            else if (map2[i][j] == 5)
+            {
+                map1[i][j].setTexture(moon);
+            }
+            else if (map2[i][j] == 6)
+            {
+                map1[i][j].setTexture(star);
+            }
+            else if (map2[i][j] == 7)
+            {
+                map1[i][j].setTexture(tree);
+            }
+            else if (map2[i][j] == 8)
+            {
+                map1[i][j].setTexture(box);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 32, 32));
+            }
+            else if (map2[i][j] == 9)
+            {
+                map1[i][j].setTexture(ground2);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 223, 100));
+            }
+            else if (map2[i][j] == 10)
+            {
+                map1[i][j].setTexture(fire);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 147, 100));
+            }
+            else if (map2[i][j] == 11)
+            {
+                map1[i][j].setTexture(balata);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 79, 110));
+            }
+            else if (map2[i][j] == 12)
+            {
+                map1[i][j].setTexture(box2);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 32, 32));
+            }
+            else if (map2[i][j] == 13)
+            {
+                map1[i][j].setTexture(wood);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 115, 70));
+            }
+            else if (map2[i][j] == 14)
+            {
+                map1[i][j].setTexture(water);
+                map1[i][j].setTextureRect(sf::IntRect(0, 0, 368, 100));
+            }
+            else if (map2[i][j] == 15)
+            {
+                map1[i][j].setTexture(small);
+            }
+            else if (map2[i][j] == 17)
+            {
+                map1[i][j].setTexture(tube);
+            }
+            else if (map2[i][j] == 18)
+            {
+                map1[i][j].setTexture(player);
+            }
+        }
+        //sky
+        map1[0][0].setPosition(100, 50);
+        map1[0][1].setPosition(300, 30);
+        map1[0][2].setPosition(500, 50);
+        map1[0][3].setPosition(1100, 100);
+        map1[0][4].setPosition(1300, 20);
+        map1[0][5].setPosition(2000, 30);
+        map1[0][6].setPosition(2100, 70);
+        map1[0][7].setPosition(2200, 50);
+        map1[0][8].setPosition(2400, 70);
+        map1[0][9].setPosition(3000, 50);
+        map1[0][10].setPosition(3200, 80);
+        map1[0][11].setPosition(3400, 30);
+        map1[0][12].setPosition(3600, 40);
+        map1[0][13].setPosition(3900, 30);
+        map1[0][14].setPosition(4600, 30);
+        map1[0][15].setPosition(5300, 30);
+        map1[0][16].setPosition(5500, 80);
+        map1[0][17].setPosition(5600, 50);
+        map1[0][18].setPosition(5700, 40);
+        map1[0][19].setPosition(5900, 30);
+        map1[0][20].setPosition(5900, 50);
+        map1[0][21].setPosition(6500, 50);
+        map1[0][22].setPosition(7200, 50);
+        /***************************************************************************************************/
+        map1[2][0].setPosition(100, 50);
+        map1[2][2].setPosition(900, 50);
+        map1[2][7].setPosition(1800, 50);
+        map1[2][1].setPosition(3853 + 500 + 506 + 320 + 230 + 250, 560);
+
+        /**************************************************************************************************/
+        map1[3][4].setPosition(206+206+350+206+50+50, 310);
+        map1[3][5].setPosition(206+206+350+206+50+80, 350);
+        map1[3][13].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+150,300);
+        map1[3][19].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290,290);
+        map1[3][27].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+5*206+80,300);
+        map1[3][28].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+5*206+150+206,380);
+        map1[3][29].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+5*206+150+206+206,380);
+        /*******************************************************************************************************/
+        //up
+        map1[4][0].setPosition(50, 430);
+        map1[4][1].setPosition(50+101, 430);
+        map1[4][2].setPosition(50+101+115, 318);
+        map1[4][3].setPosition(206+206+150, 380);
+        map1[4][4].setPosition(206+206+350+206+50, 380);
+        map1[4][5].setPosition(206+206+350+206+50+206+30+20, 320);
+        map1[4][6].setPosition(206+206+350+206+50+206+206+350, 400);
+        map1[4][8].setPosition(206+206+350+206+50+206+206+400+30+206+50+20,380);
+        map1[4][9].setPosition(206+206+350+206+50+206+206+400+30+206+50+80+20,380);
+        map1[4][10].setPosition(206+206+350+206+50+206+206+400+30+206+50+80+80+20,380);
+        map1[4][11].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+130,380);
+        map1[4][12].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+130+206,380);
+        map1[4][14].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+250,380);
+        map1[4][16].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+30,430);
+        map1[4][17].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206,318);
+        map1[4][18].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290,380);
+        map1[4][21].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206,400);
+        map1[4][24].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206,400);
+        map1[4][26].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+2*206+150,380);
+        map1[4][27].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+3*206+150,380);
+        map1[4][28].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+4*206+150,380);
+        map1[4][29].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206+5*206+150,380);
+
+        /***********************************************************************************************************/
+        //ground
+        map1[5][0].setPosition(0, 490);
+        map1[5][1].setPosition(206, 490);
+        map1[5][2].setPosition( map1[5][1].getPosition().x +206, 530);
+        map1[5][3].setPosition(206+206+350, 490);
+        map1[5][5].setPosition(206+206+350+206+50+206+30, 490);
+        map1[5][6].setPosition(206+206+350+206+50+206+206+30, 490);
+        map1[5][7].setPosition(206+206+350+206+50+206+206+30+206,490);
+        map1[5][8].setPosition(206+206+350+206+50+206+206+206+30+386, 530);
+        map1[5][9].setPosition(206+206+350+206+50+206+206+206+30+206, 490);
+        map1[5][10].setPosition(206+206+350+206+50+206+206+206+30+206+386+150, 490);
+        map1[5][13].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+130+206+206+80, 490);
+        map1[5][14].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+150, 490);
+        map1[5][15].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+150+206, 520);
+        map1[5][16].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330, 490);
+        map1[5][17].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206, 490);
+        map1[5][20].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+2069+330+206+290+290+206, 490);
+        map1[5][21].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206, 490);
+        map1[5][22].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206, 520);
+        map1[5][23].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200, 490);
+        map1[5][24].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206, 490);
+        map1[5][25].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206, 490);
+        map1[5][26].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+206, 520);
+        map1[5][27].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206, 490);
+        map1[5][28].setPosition(206+206+350+206+50+206+206+206+30+206+386+150+220+206+206+206+330+206+290+290+206+206+206+200+206+206+80+206+206, 490);
+        map1[5][29].setPosition(map1[5][28].getPosition().x +206, 490);
+        //map1[5][29].setPosition(map1[5][28].getPosition.x +206, 500);
+
+         //map1[5][28].getPosition().x;
+
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 30; j++)
+            {
+                if (map2[i][j] == 1 || map2[i][j] == 2 || map2[i][j] == 3||map2[i][j]==4||map2[i][j]==5||map2[i][j]==6||map2[i][j]==7||map2[i][j]==8||map2[i][j]==9||map2[i][j]==10||map2[i][j]==11||map2[i][j]==12||map2[i][j]==13||map2[i][j]==14||map2[i][j]==15||map2[i][j]==15
+                    ||map2[i][j]==17||map2[i][j]==18)
+                {
+                    window1.draw(map1[i][j]);
+                }
+            }
+        }
+    }
+}
+Level2::Level2()
+{
+    velocity.x=0 ;
+    velocity.y=0 ;
+    coin_score = 0;
+    t1 = sf::seconds(100.f);
+    marioDie = 0 ;
+    loadFiles() ;
+
+//ghousts positions
+    ghoust  g1 (800, 457 ) ;
+    ghoust  g2 (1460,457 ) ;
+    ghoust  g3 (3050,457 ) ;
+    ghoust  g4 (6000,457 ) ;
+    ghoust  g5 (6050,457 ) ;
+    ghoust  g6 (6700,347 ) ;
+    ghoust  g7 (6100,457 ) ;
+    ghoust  g8 (5200,457 ) ;
+    ghoust  g9 (5250,457 ) ;
+    ghoust  g10 (2530,345 ) ;
+    ghoust  g11 (2580,345 ) ;
+
+//coins positions
+    Coin c1(570, 345, 1 ) ;
+
+    Coin c2( 1460,450, 1) ;
+    Coin c3( 1510,450, 1);
+    Coin c4( 1560,450, 1) ;
+    Coin c5( 1610,450, 1) ;
+
+    Coin c6( 1070,250, 2) ;
+    Coin c7( 1110,250, 2);
+    Coin c8( 1150,250, 2) ;
+
+    Coin c9( 2145,345, 3 ) ;
+    Coin c10(2225,345, 3 ) ;
+    Coin c11(2305,345, 3 );
+
+    Coin c12(2670,300, 1) ;
+    Coin c13(2700,300, 1) ;
+    Coin c14(2770,300, 1) ;
+    Coin c15(2800,300, 1);
+
+    Coin c16(2670,250, 1) ;
+    Coin c17(2700,250, 1) ;
+    Coin c18(2770,250, 1) ;
+    Coin c19(2800,250, 1);
+
+    Coin c20(3300,300, 1) ;
+
+    Coin c21(4100,300, 1) ;
+    Coin c22(4150,300, 1) ;
+    Coin c23(4200,300, 1) ;
+
+    Coin c24(4400,250, 1) ;
+    Coin c25(4450,250, 1) ;
+    Coin c26(4500,250, 1) ;
+
+    Coin c27(5610,400, 2) ;
+    Coin c28(5660,400, 2) ;
+    Coin c29(5610,350, 2) ;
+    Coin c30(5660,350, 2) ;
+
+    Coin c31(6730,300, 2) ;
+    Coin c32(6730,250, 2) ;
+    Coin c33(6730,200, 2) ;
+
+    Coin c34(6780,230, 2) ;
+
+    Coin c35(6830,250, 2) ;
+
+    Coin c36(6880,230, 2) ;
+
+    Coin c37(6930,300, 2) ;
+    Coin c38(6930,250, 2) ;
+    Coin c39(6930,200, 2) ;
+
+    Coin c40(6100,250, 2) ;
+    Coin c41(6150,250, 2) ;
+    Coin c42(6200,250, 2) ;
+    Coin c43(6250,250, 2) ;
+    Coin c44(6300,250, 2) ;
+    Coin c45(6350,250, 2) ;
+
+    Coin c46(4600,250, 2) ;
+    Coin c47(4650,220, 2) ;
+    Coin c48(4700,250, 2) ;
+    Coin c49(4750,300, 2) ;
+    Coin c50(4800,350, 2) ;
+
+
+    ///end game
+    Win endgame(7500,40);
+
+
+//window opening
+    while (window1.isOpen())
+    {
+        sf::Event event;
+        if (g1.mario_collision_die(mario, groundHeight)||
+            g2.mario_collision_die(mario, groundHeight)||
+            g3.mario_collision_die(mario, groundHeight)||
+            g4.mario_collision_die(mario, groundHeight)||
+            g5.mario_collision_die(mario, groundHeight)||
+            g6.mario_collision_die(mario, groundHeight)||
+            g7.mario_collision_die(mario, groundHeight)||
+            g8.mario_collision_die(mario, groundHeight)||
+            g9.mario_collision_die(mario, groundHeight)||
+            g10.mario_collision_die(mario, groundHeight)||
+            g11.mario_collision_die(mario, groundHeight) )
+        {
+            mario_died() ;
+            marioDie = 1 ;
+        }
+        while (window1.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window1.close();
+        }
+        if(mario.getPosition().y ==  groundHeight + 52 ||  mario.getPosition().y >= 552  )
+        {
+            mario.setPosition(mario.getPosition().x, 500 ) ;
+            mario_died() ;
+            marioDie = 1 ;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        {
+            if ( g1.mario_collision_die(mario, groundHeight)||
+                 g2.mario_collision_die(mario, groundHeight)||
+                 g3.mario_collision_die(mario, groundHeight)||
+                 g4.mario_collision_die(mario, groundHeight)||
+                 g5.mario_collision_die(mario, groundHeight)||
+                 g6.mario_collision_die(mario, groundHeight)||
+                 g7.mario_collision_die(mario, groundHeight)||
+                 g8.mario_collision_die(mario, groundHeight)||
+                 g9.mario_collision_die(mario, groundHeight)||
+                 g10.mario_collision_die(mario, groundHeight)||
+                 g11.mario_collision_die(mario, groundHeight))
+            {
+                mario_died() ;
+                marioDie = 1 ;
+            }
+
+            if( marioDie == 0)
+            {
+                countL++ ;
+                if(countL >10) countL =0 ;
+                if(countL%2== 0)
+                {
+                    y=0 ;
+                    x++ ;
+                    if(x>5) x=1 ;
+                    mario.setTextureRect(sf::IntRect(220-(x * 27.5 ), y * 60,  27.5,60)) ;
+                }
+                view.move(  -4,0) ;
+                velocity.x= -movespeed ;
+            }
+
+
+        }
+
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        {
+
+
+            if (g1.mario_collision_die(mario, groundHeight)||
+                g2.mario_collision_die(mario, groundHeight)||
+                g3.mario_collision_die(mario, groundHeight)||
+                g4.mario_collision_die(mario, groundHeight)||
+                g5.mario_collision_die(mario, groundHeight)||
+                g6.mario_collision_die(mario, groundHeight)||
+                g7.mario_collision_die(mario, groundHeight)||
+                g8.mario_collision_die(mario, groundHeight)||
+                g9.mario_collision_die(mario, groundHeight)||
+                g10.mario_collision_die(mario, groundHeight)||
+                g11.mario_collision_die(mario, groundHeight) )
+            {
+                mario_died() ;
+                marioDie = 1 ;
+            }
+
+            if( marioDie == 0)
+            {
+                countR++ ;
+                if(countR >10) countR =0 ;
+                if(countR%2== 0)
+                {
+                    y=0;
+                    x++ ;
+                    if(x>4) x=0 ;
+                    mario.setTextureRect(sf::IntRect(220+(x * 27.5), y * 60,  27.5,60)) ;
+
+                }
+
+
+                view.move(  4,0) ;
+                /* velocity of mario*/
+               velocity.x= movespeed ;
+            }
+
+        }
+        else velocity.x=0 ;
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space  )  )
+        {
+            if ( g1.mario_collision_die(mario, groundHeight) ||
+                 g2.mario_collision_die(mario, groundHeight) ||
+                 g3.mario_collision_die(mario, groundHeight) ||
+                 g4.mario_collision_die(mario, groundHeight) ||
+                 g5.mario_collision_die(mario, groundHeight) ||
+                 g6.mario_collision_die(mario, groundHeight) ||
+                 g7.mario_collision_die(mario, groundHeight) ||
+                 g8.mario_collision_die(mario, groundHeight) ||
+                 g9.mario_collision_die(mario, groundHeight) ||
+                 g10.mario_collision_die(mario, groundHeight) ||
+                 g11.mario_collision_die(mario, groundHeight)  )
+            {
+                mario_died() ;
+                marioDie = 1 ;
+            }
+            if( marioDie == 0)
+            {
+                y=1;
+                x++ ;
+                if(x>5) x=0 ;
+                /* velocity of mario*/
+                mario.setTextureRect(sf::IntRect(220+(x * 27.5), y * 60,  27.5,60)) ;
+
+                if(  mario.getPosition().y < 240){
+
+                velocity.y = -0.3 ;
+                } else{
+
+                velocity.y = -jumpSpeed ;
+                }
+            }
+            velocity.y = -jumpSpeed ;
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space  )  &&
+                sf::Keyboard::isKeyPressed( sf::Keyboard::Left  )   )
+        {
+            if (g1.mario_collision_die(mario, groundHeight) ||
+                g2.mario_collision_die(mario, groundHeight) ||
+                g3.mario_collision_die(mario, groundHeight) ||
+                g4.mario_collision_die(mario, groundHeight) ||
+                g5.mario_collision_die(mario, groundHeight) ||
+                g6.mario_collision_die(mario, groundHeight) ||
+                g7.mario_collision_die(mario, groundHeight) ||
+                g8.mario_collision_die(mario, groundHeight) ||
+                g9.mario_collision_die(mario, groundHeight) ||
+                g10.mario_collision_die(mario, groundHeight) ||
+                g11.mario_collision_die(mario, groundHeight))
+            {
+                mario_died() ;
+                marioDie = 1 ;
+            }
+            if( marioDie == 0)
+            {
+                y=1;
+                x++ ;
+                if(x>5) x=1 ;
+                mario.setTextureRect(sf::IntRect(220-(x * 27.5), y * 60,  27.5,60)) ;
+
+                if(  mario.getPosition().y < 240){
+
+                velocity.y = -0.3 ;
+                }else{
+
+                velocity.y = -jumpSpeed ;
+                }
+                velocity.y = -jumpSpeed ;
+            }
+
+
+        }
+
+
+        collision(1) ;
+
+        if(mario.getPosition().y + 65 <groundHeight || velocity.y <0 )
+        {
+
+            velocity.y+=gravity ;
+        }
+        else
+        {
+
+            mario.setPosition(mario.getPosition().x, groundHeight - 65) ;
+            velocity.y=0 ;
+
+
+        }
+
+        mario.move(velocity.x, velocity.y) ;
+        window1.setView(view) ;
+
+        window1.clear(sf::Color(23, 66, 117, 1));
+
+        loadMap() ;
+        drawing() ;
+
+        g1.ghoust_moving(100) ;
+        window1.draw(g1.ghoust_sprite);
+        g2.ghoust_moving(200) ;
+        window1.draw(g2.ghoust_sprite);
+        g3.ghoust_moving(300) ;
+        window1.draw(g3.ghoust_sprite);
+        g4.ghoust_moving(300) ;
+        window1.draw(g4.ghoust_sprite);
+        g5.ghoust_moving(500) ;
+        window1.draw(g5.ghoust_sprite);
+        g6.ghoust_moving(300) ;
+        window1.draw(g6.ghoust_sprite);
+        g7.ghoust_moving(400) ;
+        window1.draw(g7.ghoust_sprite);
+        g8.ghoust_moving(300) ;
+        window1.draw(g8.ghoust_sprite);
+        g9.ghoust_moving(500) ;
+        window1.draw(g9.ghoust_sprite);
+        g10.ghoust_moving(400) ;
+        window1.draw(g10.ghoust_sprite);
+        g11.ghoust_moving(100) ;
+        window1.draw(g11.ghoust_sprite);
+
+
+        if( g1.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g2.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g3.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g4.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g4.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g5.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g6.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g7.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g8.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g9.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g10.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+        if( g11.ghoust_collision_die(mario, groundHeight ) ) ghoust_score++ ;
+
+        c1.coin_animation(1) ;
+        if(c1.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c1.coin_sprite);
+
+        c2.coin_animation(1) ;
+        if(c2.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c2.coin_sprite);
+
+        c3.coin_animation(1) ;
+        if(c3.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c3.coin_sprite);
+
+        c4.coin_animation(1) ;
+        if(c4.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c4.coin_sprite);
+
+        c5.coin_animation(1) ;
+        if(c5.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c5.coin_sprite);
+
+        c6.coin_animation(2) ;
+        if(c6.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c6.coin_sprite);
+
+        c7.coin_animation(2) ;
+        if(c7.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c7.coin_sprite);
+
+        c8.coin_animation(2) ;
+        if(c8.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c8.coin_sprite);
+
+
+
+        c9.coin_animation(3) ;
+        if(c9.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c9.coin_sprite);
+
+
+        c10.coin_animation(3) ;
+        if(c10.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c10.coin_sprite);
+
+        c11.coin_animation(3) ;
+        if(c11.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c11.coin_sprite);
+
+        c12.coin_animation(1) ;
+        if(c12.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c12.coin_sprite);
+
+        c13.coin_animation(1) ;
+        if(c13.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c13.coin_sprite);
+
+        c14.coin_animation(1) ;
+        if(c14.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c14.coin_sprite);
+
+        c15.coin_animation(1) ;
+        if(c15.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c15.coin_sprite);
+
+        c16.coin_animation(1) ;
+        if(c16.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c16.coin_sprite);
+
+
+        c17.coin_animation(1) ;
+        if(c17.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c17.coin_sprite);
+
+        c18.coin_animation(1) ;
+        if(c18.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c18.coin_sprite);
+
+        c19.coin_animation(1) ;
+        if(c19.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c19.coin_sprite);
+
+        c20.coin_animation(1) ;
+        if(c20.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c20.coin_sprite);
+
+        c21.coin_animation(1) ;
+        if(c21.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c21.coin_sprite);
+
+        c22.coin_animation(1) ;
+        if(c22.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c22.coin_sprite);
+
+        c23.coin_animation(1) ;
+        if(c23.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c23.coin_sprite);
+
+        c24.coin_animation(1) ;
+        if(c24.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c24.coin_sprite);
+
+        c25.coin_animation(1) ;
+        if(c25.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c25.coin_sprite);
+
+        c26.coin_animation(1) ;
+        if(c26.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c26.coin_sprite);
+
+        c27.coin_animation(2) ;
+        if(c27.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c27.coin_sprite);
+
+        c28.coin_animation(2) ;
+        if(c28.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c28.coin_sprite);
+
+        c29.coin_animation(2) ;
+        if(c29.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c29.coin_sprite);
+
+        c30.coin_animation(2) ;
+        if(c30.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c30.coin_sprite);
+
+        c31.coin_animation(2) ;
+        if(c31.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c31.coin_sprite);
+
+        c32.coin_animation(2) ;
+        if(c32.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c32.coin_sprite);
+
+        c33.coin_animation(2) ;
+        if(c33.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c33.coin_sprite);
+
+        c34.coin_animation(2) ;
+        if(c34.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c34.coin_sprite);
+
+        c35.coin_animation(2) ;
+        if(c35.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c35.coin_sprite);
+
+        c36.coin_animation(2) ;
+        if(c36.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c36.coin_sprite);
+
+        c37.coin_animation(2) ;
+        if(c37.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c37.coin_sprite);
+
+        c38.coin_animation(2) ;
+        if(c38.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c38.coin_sprite);
+
+        c39.coin_animation(2) ;
+        if(c39.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c39.coin_sprite);
+
+        c40.coin_animation(2) ;
+        if(c40.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c40.coin_sprite);
+
+        c41.coin_animation(2) ;
+        if(c41.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c41.coin_sprite);
+
+        c42.coin_animation(2) ;
+        if(c42.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c42.coin_sprite);
+
+        c43.coin_animation(2) ;
+        if(c43.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c43.coin_sprite);
+
+        c44.coin_animation(2) ;
+        if(c44.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c44.coin_sprite);
+
+        c45.coin_animation(2) ;
+        if(c45.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c45.coin_sprite);
+
+        c46.coin_animation(2) ;
+        if(c46.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c46.coin_sprite);
+
+        c47.coin_animation(2) ;
+        if(c47.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c47.coin_sprite);
+
+        c48.coin_animation(2) ;
+        if(c48.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c48.coin_sprite);
+
+        c49.coin_animation(2) ;
+        if(c49.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c49.coin_sprite);
+
+        c50.coin_animation(2) ;
+        if(c50.coin_ate(mario))  coin_score++ ;
+        else window1.draw(c50.coin_sprite);
+//end of game
+        window1.draw(endgame.endGame);
+        if(endgame.winGame(mario,groundHeight)&&marioDie==0)
+        {
+            view.move(0,0);
+            movespeed=0;
+          /*  winpage.setTexture(winPage_p) ;
+            winpage.setTextureRect( sf::IntRect( 0,80,800,250 ) ) ;
+            winpage.setPosition( view.getCenter().x -400, view.getCenter().y -190 ) ;
+            window1.draw(winpage) ;*/
+
+                window1.close();
+                nnn n;
+        /*    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                cout<<"click";
+            }*/
+
+           // sf::Mouse::setPosition(sf::Vector2i(404, 270), window);
+
+        }
+
+        load_Score(coin_score, ghoust_score) ;
+
+        loadTimer() ;
+        window1.display();
+    }
+
+}
+void Level2::drawing()
+{
+    window1.draw(mario);
+
+    if(marioDie== 1)
+    {
+        gameOver_sprite.setTexture(gameOver_texture) ;
+        gameOver_sprite.setTextureRect( sf::IntRect( 0,80,800,250 ) ) ;
+        gameOver_sprite.setPosition( view.getCenter().x -400, view.getCenter().y -190 ) ;
+        window1.draw(gameOver_sprite) ;
+    }
+}
+bool  Level2::collision(int order)
+ {
+     if(map1[5][0].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][1].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][3].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][5].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][6].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][7].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][9].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][10].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][13].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][14].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][16].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][17].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][20].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][21].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][23].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][24].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][25].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][27].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][28].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+        map1[5][29].getGlobalBounds().intersects(mario.getGlobalBounds())
+        )
+        {
+                 groundHeight = map1[5][0].getPosition().y+10;
+                 return true;
+        }
+        else if(map1[4][3].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+                map1[4][4].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+                map1[4][8].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+                map1[4][9].getGlobalBounds().intersects(mario.getGlobalBounds()) ||
+                map1[4][10].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][11].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][12].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][14].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][18].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][26].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][27].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][28].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[4][29].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[3][28].getGlobalBounds().intersects(mario.getGlobalBounds())||
+                map1[3][29].getGlobalBounds().intersects(mario.getGlobalBounds())
+                )
+        {
+            groundHeight = 390;
+
+                 return true ;
+        }
+        else if(map1[3][19].getGlobalBounds().intersects(mario.getGlobalBounds()))
+        {
+            groundHeight = 300;
+
+            return true ;
+        }
+   else
+    {
+        if(marioDie == 1 ) groundHeight = 500 ;
+        else  groundHeight = 650 ;
+    }
+}
+
+/*bool Level2::ghoust_collision_mario( ) {
+          if ( g1.mario_collision_die(mario , groundHeight) ||
+              g2.mario_collision_die(mario , groundHeight) ||
+             g3.mario_collision_die(mario , groundHeight)
+              ) return true ;
+          else return false ;
+}
+
+}*/
+bool Level2::mario_died()
+{
+    mario.setTexture(mario_die_texture) ;
+    mario.setTextureRect(sf::IntRect( 0,0,30,57 )) ;
+    window1.draw(mario) ;
+    return true;
+}
+void Level2::load_Score ( int coin_score, int ghoust_score )
+{
+    //  åäÇ åäÚÑÝ ÇáÏäíÇ ÈÊÇÚÊ  Çá  font   ãÊäÓÇÔ ÈÞÇ  :)
+
+    // declaring output string stream
+
+    // Sending a number as a stream into output
+    // if(ghoust_score> 1 ) ghoust_score = 1 ;
+    // string
+    ostringstream str1;
+    ostringstream str2;
+
+    str1 << coin_score;
+    str2 << ghoust_score;
+    // the str() coverts number into string
+
+    geek = str1.str();
+    geek2 = str2.str();
+
+    text_score.setString(geek) ;
+    text_score2.setString(geek2) ;
+    text_score.setPosition(view.getCenter().x +245, view.getCenter().y-225  ) ;
+    window1.draw(text_score) ;
+    text_score2.setPosition(view.getCenter().x +140, view.getCenter().y-225  ) ;
+    window1.draw(text_score2) ;
+
+    //  åäÇ ÔÛá ÇáÕæÑå Çá ÌäÈ ÇáÑÞã
+
+    coin_sprite2.setPosition(view.getCenter().x +285, view.getCenter().y-220 ) ;
+    ghoust_sprite2.setPosition(view.getCenter().x +175, view.getCenter().y-220 ) ;
+
+    window1.draw(coin_sprite2) ;
+    window1.draw(ghoust_sprite2) ;
+
+
+}
+void Level2::loadTimer()
+{
+    elapsed1 = clock.getElapsedTime();
+    if( elapsed1.asSeconds() > 100.0f)
+    {
+        mario_died() ;
+        marioDie = 1 ;
+    }
+    else
+    {
+        int a = (t1 - elapsed1).asSeconds() ;
+        ostringstream strtimer;
+
+        strtimer << a;
+        geek3 = strtimer.str();
+        texttimer.setString(geek3) ;
+
+        texttimer.setPosition(view.getCenter().x -245, view.getCenter().y-225  ) ;
+
+    }
+    window1.draw(texttimer) ;
+
+    textTime.setPosition(view.getCenter().x -340, view.getCenter().y-228  ) ;
+    window1.draw(textTime);
+
+
+}
+
+
+Level2::~Level2()
+{
+
+}
+
+
+
+

@@ -1,0 +1,42 @@
+#include "Win.h"
+#include <SFML/Graphics.hpp>
+#include<iostream>
+#include"Level2.h"
+using namespace std;
+Win::Win(int x,int y)
+{
+    loadPic();
+    endGame_x=x;
+    endGame_y=y;
+    endGame.setPosition(x,y);
+    endGame.setTexture(endGame_p);
+
+    //stick.setTextureRect(sf::IntRect)
+}
+void Win::loadPic()
+{
+    if(!endGame_p.loadFromFile("end.png"))
+    {
+        cout<<"endgame picture not found";
+    }
+
+}
+bool Win::winGame(sf::Sprite mario,int ground)
+{
+    if(mario.getGlobalBounds().intersects(endGame.getGlobalBounds()))
+        return true;
+    else
+        return false;
+}
+/*void Win::winPage()
+{
+    winpage.setTexture(winPage_p) ;
+    winpage.setTextureRect( sf::IntRect( 0,80,800,250 ) ) ;
+    //winpage.setPosition( view.getCenter().x -400, view.getCenter().y -190 ) ;
+  //  window.draw(winpage) ;
+}
+*/
+Win::~Win()
+{
+    //dtor
+}

@@ -8,5 +8,4 @@ Difficulty level of the game will increase over the levels, requiring the player
 ![Level1](https://user-images.githubusercontent.com/48572908/84841330-4c245100-b042-11ea-8f81-ce70180e92cd.png)
 ![Level2](https://user-images.githubusercontent.com/48572908/84841376-6c541000-b042-11ea-8e0c-829ba06cb4a3.png)
 ![Level3](https://user-images.githubusercontent.com/48572908/84841410-87bf1b00-b042-11ea-904a-15c6acc1a82d.png)
-![Main](https://user-images.githubusercontent.com/48572908/84841477-b5a45f80-b042-11ea-9b63-16a07c689fac.png)
 
